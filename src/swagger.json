@@ -1,0 +1,271 @@
+{
+    "openapi":"3.0.0",
+    "info":{
+        "title":"User registration Documentation",
+        "description":"this is  an API User registration",
+        "version":"1.0.0",
+        "contact":{"email":"nenenernan@gmail.com"}
+    },
+    "paths":{
+        "/users":{
+            "post":{
+                "tags": [
+                    "User"
+                  ],
+                "summary":"Create User",
+                "description":"Create  a new User",
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "name":{
+                                        "type":"string"
+                                    },
+                                    "email":{
+                                        "type":"string"
+                                    }
+                                },
+                                "example":{
+                                    "name":"ernandes",
+                                    "email":"nenen@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "description":"user create with sucess"
+                    },
+                    "400":{
+                        "description":"Email already exist"
+                    }
+                }
+            },
+            "get":{
+                "tags": [
+                    "User"
+                  ],
+                  "summary": "search all the Users",
+                  "description": "Only **admin** user can access",
+                  "parameters": [
+                    {
+                      "in": "header",
+                      "name": "user_id",
+                      "schema": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "required": true
+                    }
+                  ],
+                  "responses": {
+                    "200": {
+                      "description": "search performed successfully",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "admin": {
+                                  "type": "boolean"
+                                },
+                                "id": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "email": {
+                                  "type": "string"
+                                },
+                                "created_at": {
+                                  "type": "string"
+                                },
+                                "updated_at": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "400": {
+                      "description": "User without permission or User not found.",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "type": "object",
+                            "properties": {
+                              "error": {
+                                "type": "string"
+                              }
+                            },
+                            "example": {
+                              "error": "User does not exist or User is not an admin"                             
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                
+            }
+        },
+        "/users/{user_id}":{
+
+          "get":{
+            "tags": [
+              "User"
+            ],
+            "summary": "return a specific user",
+            "description": "the user must have permission and admin to perform the search",
+            "parameters": [
+              {
+                "in": "path",
+                "name": "user_id",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "returns a specific user",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                          "properties": {
+                          "admin": {
+                            "type": "boolean"
+                          },
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "updated_at": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "User not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        }
+                      },
+                      "example": {
+                        "error": "User not found"                             
+                      }
+                    }
+                  }
+                }
+              } 
+            }
+        },
+        "/users/{user_id}/admin":{
+          "patch":{
+            "tags": [
+              "User"
+            ],
+            "summary": "update his admin permission to true",
+            "description": "search for a user by id and update his admin permission to true",
+            "parameters": [
+              {
+                "in": "path",
+                "name": "user_id",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "search performed successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                          "properties": {
+                          "admin": {
+                            "type": "boolean"
+                          },
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "updated_at": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "User not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        }
+                      },
+                      "example": {
+                        "error": "User not found"                             
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          
+
+        }
+
+     
+      }
+
+    }
